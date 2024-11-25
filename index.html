@@ -1,0 +1,285 @@
+<html>
+<head>
+  <title>Foodys</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://registry.npmmirror.com/vue/3.3.11/files/dist/vue.global.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex flex-col md:flex-row" id="app">
+    <!-- Sidebar -->
+    <div class="w-full md:w-1/5 bg-white p-6">
+      <div class="flex items-center mb-6">
+        <img alt="Foodys logo" class="w-10 h-10 rounded-full" height="50" src="https://storage.googleapis.com/a1aa/image/tQB8lrJySU6VMphhLTa8WhS2zkqGnSeR5fyUdomXDuCEQR0TA.jpg" width="50"/>
+        <span class="ml-3 text-2xl font-bold">Foodys</span>
+      </div>
+      <div class="flex items-center mb-6">
+        <img alt="Profile picture of Theresa Webb, Master Chef" class="w-12 h-12 rounded-full" height="50" src="https://storage.googleapis.com/a1aa/image/WzdhfKfGGxgTa0tY4FmCuOr03jeW1ZIivPcfLrLMKstXDFRPB.jpg" width="50"/>
+        <div class="ml-3">
+          <p class="text-lg font-bold">Shakthi</p>
+          <p class="text-sm text-gray-500">Master Chef</p>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li class="mb-4">
+            <button :class="['flex items-center text-lg p-3 rounded-lg w-full', activeNav === 'Recipes' ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-200']" @click="setActiveNav('Recipes')">
+              <i class="fas fa-utensils mr-3"></i>
+              Recipes
+            </button>
+          </li>
+          <li class="mb-4">
+            <button :class="['flex items-center text-lg p-3 rounded-lg w-full', activeNav === 'Favorites' ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-200']" @click="setActiveNav('Favorites')">
+              <i class="fas fa-heart mr-3"></i>
+              Favorites
+            </button>
+          </li>
+          <li class="mb-4">
+            <button :class="['flex items-center text-lg p-3 rounded-lg w-full', activeNav === 'Courses' ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-200']" @click="setActiveNav('Courses')">
+              <i class="fas fa-book mr-3"></i>
+              Courses
+            </button>
+          </li>
+          <li class="mb-4">
+            <button :class="['flex items-center text-lg p-3 rounded-lg w-full', activeNav === 'Community' ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-200']" @click="setActiveNav('Community')">
+              <i class="fas fa-users mr-3"></i>
+              Community
+            </button>
+          </li>
+          <li class="mb-4">
+            <button :class="['flex items-center text-lg p-3 rounded-lg w-full', activeNav === 'Upload' ? 'bg-yellow-500 text-white' : 'text-gray-700 hover:bg-gray-200']" @click="setActiveNav('Upload')">
+              <i class="fas fa-upload mr-3"></i>
+              Upload
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="w-full md:w-4/5 p-6">
+      <div v-if="activeNav === 'Recipes' || activeNav === 'Favorites'">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+          <div class="relative w-full md:w-1/2 mb-4 md:mb-0">
+            <input class="w-full p-3 pl-10 border border-gray-300 rounded-lg" placeholder="Search recipes..." type="text" v-model="searchQuery" @input="filterRecipes"/>
+            <i class="fas fa-search absolute left-3 top-3 text-gray-500"></i>
+          </div>
+          <div class="flex items-center">
+            <div class="text-center mr-6">
+              <p class="text-2xl font-bold text-green-600">120</p>
+              <p class="text-gray-500">Videos</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-green-600">201</p>
+              <p class="text-gray-500">Recipes</p>
+            </div>
+            <a class="ml-6 bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center" href="login.html">
+              <i class="fas fa-sign-in-alt mr-2"></i>
+              Login
+            </a>
+          </div>
+        </div>
+        <h1 class="text-4xl font-bold mb-6">Learn, Cook, &amp; Eat your food</h1>
+        <div class="flex mb-6">
+          <button :class="['px-4 py-2 rounded-full mr-2', activeCategory === 'Pizza' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700']" @dblclick="filterByCategory('Pizza')">Pizza</button>
+          <button :class="['px-4 py-2 rounded-full mr-2', activeCategory === 'Dessert' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700']" @dblclick="filterByCategory('Dessert')">Dessert</button>
+          <button :class="['px-4 py-2 rounded-full mr-2', activeCategory === 'Noodle' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700']" @dblclick="filterByCategory('Noodle')">Noodle</button>
+          <button :class="['px-4 py-2 rounded-full mr-2', activeCategory === 'Cocktails' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700']" @dblclick="filterByCategory('Cocktails')">Cocktails</button>
+          <button :class="['px-4 py-2 rounded-full', activeCategory === 'Salad' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700']" @dblclick="filterByCategory('Salad')">Salad</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div class="bg-white p-4 rounded-lg shadow-lg" v-for="recipe in filteredRecipes" :key="recipe.id">
+            <img :alt="recipe.name" class="w-full h-32 object-cover rounded-full mb-4" :src="recipe.image" height="150" width="150"/>
+            <h2 class="text-xl font-bold mb-2">{{ recipe.name }}</h2>
+            <div class="flex items-center mb-2">
+              <i class="fas fa-star text-yellow-500 mr-1" v-for="n in 5" :key="n"></i>
+              <span class="text-gray-500 ml-2">(7 Reviews)</span>
+            </div>
+            <p class="text-gray-500 mb-2">20 mins</p>
+            <div class="flex justify-between items-center">
+              <button class="bg-green-100 text-green-600 px-4 py-2 rounded-lg" @click="viewRecipe(recipe.id)">View Recipe</button>
+              <i :class="['fas fa-heart cursor-pointer', isFavorite(recipe) ? 'text-red-500' : 'text-gray-500']" @click="toggleFavorite(recipe)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="activeNav === 'Courses'">
+        <iframe src="courses.html" class="w-full h-screen"></iframe>
+      </div>
+      <div v-if="activeNav === 'Community'">
+        <iframe src="community.html" class="w-full h-screen"></iframe>
+      </div>
+      <div v-if="activeNav === 'Upload'">
+        <h1 class="text-4xl font-bold mb-6">Upload Your Recipe</h1>
+        <form @submit.prevent="uploadRecipe" class="mb-6">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="recipeName">Recipe Name</label>
+            <input v-model="newRecipe.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="recipeName" type="text" placeholder="Recipe Name">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="recipeCategory">Category</label>
+            <select v-model="newRecipe.category" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="recipeCategory">
+              <option>Pizza</option>
+              <option>Dessert</option>
+              <option>Noodle</option>
+              <option>Cocktails</option>
+              <option>Salad</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="recipeImage">Image URL</label>
+            <input v-model="newRecipe.image" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="recipeImage" type="text" placeholder="Image URL">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="recipeDescription">Description</label>
+            <textarea v-model="newRecipe.description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="recipeDescription" placeholder="Description"></textarea>
+          </div>
+          <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+              Upload Recipe
+            </button>
+          </div>
+        </form>
+        <h2 class="text-2xl font-bold mb-4">Your Uploaded Recipes</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white p-4 rounded-lg shadow-lg" v-for="recipe in userRecipes" :key="recipe.id">
+            <img :alt="recipe.name" class="w-full h-32 object-cover rounded-full mb-4" :src="recipe.image" height="150" width="150"/>
+            <h2 class="text-xl font-bold mb-2">{{ recipe.name }}</h2>
+            <p class="text-gray-500 mb-2">{{ recipe.description }}</p>
+            <div class="flex justify-between items-center">
+              <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg" @click="editRecipe(recipe)">Edit</button>
+              <button class="bg-red-500 text-white px-4 py-2 rounded-lg" @click="deleteRecipe(recipe.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="activeNav === 'RecipeDetail'">
+        <iframe :src="recipeDetailUrl" class="w-full h-screen"></iframe>
+      </div>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    createApp({
+      setup() {
+        const searchQuery = ref('');
+        const recipes = ref([
+          { id: 1, name: 'Special Salad Chicken', image: 'https://storage.googleapis.com/a1aa/image/qlJQLf4IcmQwCaMW83jiEhcrdHWIRrWFvVA3zUUSsHGDnI6JA.jpg', category: 'Salad', detailUrl: 'recipe1.html' },
+          { id: 2, name: 'Noodle Chicken', image: 'https://storage.googleapis.com/a1aa/image/QQLcpjHeIzSpbahMWCY2HYfTPeUOfbvA1Jb41eWEq9kqIJieE.jpg', category: 'Noodle', detailUrl: 'recipe2.html' },
+          { id: 3, name: 'Chicken with green veg', image: 'https://storage.googleapis.com/a1aa/image/ezdlUip30P3nA6xVi1TTLuheVdDf93hZj9rBxuXl8exJdERPB.jpg', category: 'Salad', detailUrl: 'recipe3.html' },
+          { id: 4, name: 'Spicy Chicken Bowl', image: 'https://storage.googleapis.com/a1aa/image/toQJqX0iEyozF9qbdlr5eKpGVf01JCGhjRrexfjHoOElAERPB.jpg', category: 'Salad', detailUrl: 'recipe4.html' },
+          { id: 5, name: 'Chocolate Cake', image: 'https://storage.googleapis.com/a1aa/image/fnfHxSlVBYls7kpoE2yD2ywcG7hgO90yUfix1hJzosaFwhonA.jpg', category: 'Dessert', detailUrl: 'recipe5.html' },
+          { id: 6, name: 'Margarita Pizza', image: 'https://storage.googleapis.com/a1aa/image/DkmtI7YvsWIDAZZxRxqP1H7rdc9rwfHrPvVleQlaKQsAhQ0TA.jpg', category: 'Pizza', detailUrl: 'recipe6.html' },
+          { id: 7, name: 'Mojito', image: 'https://storage.googleapis.com/a1aa/image/2Tv7ZArRsVqiKdd47S9m6ko2IN829Qt4iFuWTIXxPnxTME9E.jpg', category: 'Cocktails', detailUrl: 'recipe7.html' }
+        ]);
+        const filteredRecipes = ref(recipes.value);
+        const activeNav = ref('Recipes');
+        const activeCategory = ref('');
+        const favorites = ref([]);
+        const newRecipe = ref({
+          name: '',
+          category: '',
+          image: '',
+          description: ''
+        });
+        const userRecipes = ref([]);
+        const recipeDetailUrl = ref('');
+
+        const filterRecipes = () => {
+          filteredRecipes.value = recipes.value.filter(recipe =>
+            recipe.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+          );
+        };
+
+        const filterByCategory = (category) => {
+          activeCategory.value = category;
+          filteredRecipes.value = recipes.value.filter(recipe =>
+            recipe.category.toLowerCase() === category.toLowerCase()
+          );
+        };
+
+        const setActiveNav = (nav) => {
+          activeNav.value = nav;
+          if (nav === 'Favorites') {
+            filteredRecipes.value = favorites.value;
+          } else if (nav === 'Recipes') {
+            filterRecipes();
+          } else if (nav === 'Courses') {
+            recipeDetailUrl.value = 'courses.html';
+          } else if (nav === 'Community') {
+            recipeDetailUrl.value = 'community.html';
+          }
+        };
+
+        const toggleFavorite = (recipe) => {
+          const index = favorites.value.findIndex(fav => fav.id === recipe.id);
+          if (index === -1) {
+            favorites.value.push(recipe);
+          } else {
+            favorites.value.splice(index, 1);
+          }
+        };
+
+        const isFavorite = (recipe) => {
+          return favorites.value.some(fav => fav.id === recipe.id);
+        };
+
+        const uploadRecipe = () => {
+          const newId = recipes.value.length + 1;
+          const newRecipeData = { ...newRecipe.value, id: newId, detailUrl: `recipe${newId}.html` };
+          recipes.value.push(newRecipeData);
+          userRecipes.value.push(newRecipeData);
+          filterRecipes();
+          newRecipe.value = { name: '', category: '', image: '', description: '' };
+          setActiveNav('Recipes');
+        };
+
+        const editRecipe = (recipe) => {
+          newRecipe.value = { ...recipe };
+          setActiveNav('Upload');
+        };
+
+        const deleteRecipe = (id) => {
+          recipes.value = recipes.value.filter(recipe => recipe.id !== id);
+          userRecipes.value = userRecipes.value.filter(recipe => recipe.id !== id);
+          filterRecipes();
+        };
+
+        const viewRecipe = (id) => {
+          const recipe = recipes.value.find(recipe => recipe.id === id);
+          if (recipe) {
+            recipeDetailUrl.value = recipe.detailUrl;
+            setActiveNav('RecipeDetail');
+          }
+        };
+
+        return {
+          searchQuery,
+          recipes,
+          filteredRecipes,
+          filterRecipes,
+          filterByCategory,
+          activeNav,
+          setActiveNav,
+          activeCategory,
+          favorites,
+          toggleFavorite,
+          isFavorite,
+          newRecipe,
+          uploadRecipe,
+          userRecipes,
+          editRecipe,
+          deleteRecipe,
+          viewRecipe,
+          recipeDetailUrl
+        };
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>

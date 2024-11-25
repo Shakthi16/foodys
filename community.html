@@ -1,0 +1,217 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Community Chat - Food Recipe App
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chat-bubble {
+            position: relative;
+            padding: 10px 20px;
+            background: #f1f0f0;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            max-width: 70%;
+        }
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10px;
+            margin-top: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #f1f0f0 transparent transparent;
+        }
+        .chat-bubble.user {
+            background: #cce5ff;
+            align-self: flex-end;
+        }
+        .chat-bubble.user::after {
+            left: auto;
+            right: -10px;
+            border-color: transparent transparent transparent #cce5ff;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+        .chat-header .chat-actions {
+            display: flex;
+            align-items: center;
+        }
+        .chat-header .chat-actions button {
+            background: none;
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+        .chat-footer {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+        .chat-footer input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        .chat-footer button {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+  </style>
+ </head>
+ <body>
+  <div class="container mx-auto px-4 py-8">
+   <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="chat-header">
+     <h1>
+      Community Chat
+     </h1>
+     <div class="chat-actions">
+      <button>
+       <i class="fas fa-cog">
+       </i>
+      </button>
+      <button>
+       <i class="fas fa-sign-out-alt">
+       </i>
+      </button>
+     </div>
+    </div>
+    <div class="p-6 h-96 overflow-y-auto chat-container" id="chat-box">
+     <div class="flex items-start mb-4">
+      <img alt="Profile picture of Gomathi (Shinchan character)" class="w-12 h-12 rounded-full mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/oxH3IQIDPyreY6sBZnHVIEvzdtfYjSRWfyYoCff6z814p0heE.jpg" width="50"/>
+      <div class="chat-bubble">
+       <h3 class="text-sm font-semibold text-gray-800">
+        Gomathi
+       </h3>
+       <p class="text-gray-800">
+        Hi everyone! What are some good vegan recipes?
+       </p>
+       <div class="text-gray-600 text-xs">
+        2 minutes ago
+       </div>
+      </div>
+     </div>
+     <div class="flex items-start mb-4">
+      <img alt="Profile picture of Gayathri (Shinchan character)" class="w-12 h-12 rounded-full mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/PsfmOT7Jsb0eyEsm8PHGP2jXS1tMHz4bqRfNWRshtA0iKdonA.jpg" width="50"/>
+      <div class="chat-bubble">
+       <h3 class="text-sm font-semibold text-gray-800">
+        Gayathri
+       </h3>
+       <p class="text-gray-800">
+        Can anyone share a quick breakfast recipe?
+       </p>
+       <div class="text-gray-600 text-xs">
+        5 minutes ago
+       </div>
+      </div>
+     </div>
+     <div class="flex items-start mb-4">
+      <img alt="Profile picture of Pooja (Shinchan character)" class="w-12 h-12 rounded-full mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/u7EsqhEuBxILBRe9aJey0XHBU0Yqth3ERGv18kZdHXHTlO0TA.jpg" width="50"/>
+      <div class="chat-bubble">
+       <h3 class="text-sm font-semibold text-gray-800">
+        Pooja
+       </h3>
+       <p class="text-gray-800">
+        Looking for gluten-free dessert ideas.
+       </p>
+       <div class="text-gray-600 text-xs">
+        10 minutes ago
+       </div>
+      </div>
+     </div>
+     <div class="flex items-start mb-4">
+      <img alt="Profile picture of Doreamon (Shinchan character)" class="w-12 h-12 rounded-full mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/ptzLVvXtsfTqVawELkMWr3eXqGtqNvXPzUXxLTfhYfR7U6QPB.jpg" width="50"/>
+      <div class="chat-bubble">
+       <h3 class="text-sm font-semibold text-gray-800">
+        Doreamon
+       </h3>
+       <p class="text-gray-800">
+        Best spices for Indian cuisine?
+       </p>
+       <div class="text-gray-600 text-xs">
+        15 minutes ago
+       </div>
+      </div>
+     </div>
+     <div class="flex items-start mb-4">
+      <img alt="Profile picture of Shakthi (Shinchan character)" class="w-12 h-12 rounded-full mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/yimc0Epf3Gxf0U7C1rkQ3IadQNsgZ1Qk8nMJAVrBLGXSlO0TA.jpg" width="50"/>
+      <div class="chat-bubble">
+       <h3 class="text-sm font-semibold text-gray-800">
+        Shakthi
+       </h3>
+       <p class="text-gray-800">
+        How to make homemade pasta?
+       </p>
+       <div class="text-gray-600 text-xs">
+        20 minutes ago
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="chat-footer">
+     <input id="message-input" placeholder="Type your message here..." type="text"/>
+     <button id="send-button">
+      Send
+     </button>
+    </div>
+   </div>
+  </div>
+  <script>
+   document.getElementById('send-button').addEventListener('click', function() {
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value.trim();
+        if (message) {
+            const chatBox = document.getElementById('chat-box');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('flex', 'items-start', 'mb-4');
+            newMessage.innerHTML = `
+                <img src="https://placehold.co/50x50?text=Shinchan" alt="Profile picture of current user" class="w-12 h-12 rounded-full mr-4" width="50" height="50">
+                <div class="chat-bubble user">
+                    <h3 class="text-sm font-semibold text-gray-800">Current User</h3>
+                    <p class="text-gray-800">${message}</p>
+                    <div class="text-gray-600 text-xs">Just now</div>
+                </div>
+            `;
+            chatBox.appendChild(newMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            messageInput.value = '';
+        }
+    });
+  </script>
+ </body>
+</html>
